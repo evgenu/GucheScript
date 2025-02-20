@@ -1,7 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-typedef enum {
+typedef enum
+{
     ERR_NO = 0,
     ERR_OPEN_FILE,
     ERR_ALLOC_MEM,
@@ -16,7 +17,8 @@ typedef enum {
     ERR_INVALID_FUNC,
 } errors;
 
-typedef enum {
+typedef enum
+{
     TOKEN_NAME = 1,
     TOKEN_NUMBER,
     TOKEN_STRING,
@@ -28,6 +30,5 @@ typedef enum {
     TOKEN_SEMICOLON,
     TOKEN_RETURN,
 } token_types;
-
 
 #endif // GLOBALS_H

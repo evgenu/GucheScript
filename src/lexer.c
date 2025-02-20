@@ -1,6 +1,6 @@
 #include "lexer.h"
 
-int open_file(const char *filename, file_content_t* file_content)
+int open_file(const char *filename, file_content_t *file_content)
 {
     FILE *file = fopen(filename, "r");
     if (file == NULL)
@@ -27,13 +27,13 @@ int open_file(const char *filename, file_content_t* file_content)
     return ERR_NO;
 }
 
-void chop_char(lexer_t * lexer)
+void chop_char(lexer_t *lexer)
 {
-    if ( lexer->cur < lexer->file_content.size )
+    if (lexer->cur < lexer->file_content.size)
     {
         char c = lexer->file_content.content[lexer->cur];
         lexer->cur++;
-        if (  c == '\n' )
+        if (c == '\n')
         {
             lexer->line++;
             lexer->bol = lexer->cur;
@@ -41,13 +41,13 @@ void chop_char(lexer_t * lexer)
     }
 }
 
-void trim_left(lexer_t * lexer)
+void trim_left(lexer_t *lexer)
 {
-    while ( is_not_empty ( lexer ) )
+    while (is_not_empty(lexer))
     {
         char c = lexer->file_content.content[lexer->cur];
-        if ( c == ' ' || c == '\t' || c == '\n' || c == '\r' )
-            chop_char ( lexer );
+        if (c == ' ' || c == '\t' || c == '\n' || c == '\r')
+            chop_char(lexer);
         else
             break;
     }
@@ -61,12 +61,12 @@ void drop_line(lexer_t *lexer)
         chop_char(lexer);
 }
 
-int is_empty(lexer_t * lexer)
+int is_empty(lexer_t *lexer)
 {
     return !is_not_empty(lexer);
 }
 
-int is_not_empty(lexer_t * lexer)
+int is_not_empty(lexer_t *lexer)
 {
     return lexer->cur < lexer->file_content.size;
 }
@@ -74,14 +74,14 @@ int is_not_empty(lexer_t * lexer)
 token_t next_token(lexer_t *lexer)
 {
     trim_left(lexer);
-    
+
     while (is_not_empty(lexer) && lexer->file_content.content[lexer->cur] == '#')
     {
         drop_line(lexer);
         trim_left(lexer);
     }
 
-    if ( is_empty(lexer) )
+    if (is_empty(lexer))
     {
         token_t token = {
             .value = NULL,
@@ -94,7 +94,7 @@ token_t next_token(lexer_t *lexer)
     {
         char c = lexer->file_content.content[lexer->cur];
         token_t token;
-        
+
         if (isalpha(c))
         {
             size_t start = lexer->cur;
@@ -106,7 +106,7 @@ token_t next_token(lexer_t *lexer)
             char *value = (char *)malloc(length + 1);
             strncpy(value, &lexer->file_content.content[start], length);
             value[length] = '\0';
-            
+
             token.value = value;
             token.type = "IDENTIFIER";
             token.pos = start;
@@ -122,7 +122,7 @@ token_t next_token(lexer_t *lexer)
             char *value = (char *)malloc(length + 1);
             strncpy(value, &lexer->file_content.content[start], length);
             value[length] = '\0';
-            
+
             token.value = value;
             token.type = "NUMBER";
             token.pos = start;
@@ -136,7 +136,7 @@ token_t next_token(lexer_t *lexer)
             token.type = "SYMBOL";
             token.pos = lexer->cur - 1;
         }
-        
+
         return token;
     }
 }

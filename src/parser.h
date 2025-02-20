@@ -9,11 +9,12 @@
 #include "globals.h"
 #include "lexer.h"
 
-typedef struct Parser {
-    token_t * token_list;
+typedef struct Parser
+{
+    token_t *token_list;
     uint64_t errors;
 } parser_t;
 
-parser_t init_parser(token_t * token_list, size_t token_count);
+parser_t init_parser(token_t *token_list, size_t token_count);
 
 #endif // PARSER_H

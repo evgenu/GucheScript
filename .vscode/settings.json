@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "variable_table.h": "c",
+        "string.h": "c"
+    }
+}
