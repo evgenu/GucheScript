@@ -1,0 +1,33 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
+typedef enum {
+    ERR_NO = 0,
+    ERR_OPEN_FILE,
+    ERR_ALLOC_MEM,
+    ERR_UNEXPECTED_CHAR,
+    ERR_UNEXPECTED_TOKEN,
+    ERR_UNEXPECTED_EOF,
+    ERR_INVALID_SYNTAX,
+    ERR_INVALID_TYPE,
+    ERR_INVALID_EXPR,
+    ERR_INVALID_STMT,
+    ERR_INVALID_VAR,
+    ERR_INVALID_FUNC,
+} errors;
+
+typedef enum {
+    TOKEN_NAME = 1,
+    TOKEN_NUMBER,
+    TOKEN_STRING,
+    TOKEN_CHAR,
+    TOKEN_OPAREN,
+    TOKEN_CPAREN,
+    TOKEN_OCURLY,
+    TOKEN_CCURLY,
+    TOKEN_SEMICOLON,
+    TOKEN_RETURN,
+} token_types;
+
+
+#endif // GLOBALS_H
