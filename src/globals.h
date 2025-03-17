@@ -17,7 +17,8 @@ typedef enum
     ERR_INVALID_FUNC,
 } errors;
 
-typedef enum {
+typedef enum
+{
     TOKEN_NAME = 1,
     TOKEN_NUMBER,
     TOKEN_FUNC,
@@ -41,7 +42,8 @@ typedef enum {
     TOKEN_EOF
 } token_types;
 
-typedef enum {
+typedef enum
+{
     AST_FUNCTION,
     AST_VAR_DECL,
     AST_ASSIGNMENT,

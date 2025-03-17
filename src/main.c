@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
                                                     "UNKNOWN");
     }
 
+    printf("\n");
+
     parser_t parser = {tokens, 0};
     ASTNode *ast = parse_function(&parser);
 
@@ -84,7 +86,6 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Error: parsing failed\n");
         exit(1);
     }
-    printf("Parsing successful\n");
 
     print_ast(ast, 0);
     

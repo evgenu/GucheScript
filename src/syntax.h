@@ -6,7 +6,8 @@
 #include <string.h>
 #include "globals.h"
 
-typedef struct ASTNode {
+typedef struct ASTNode
+{
     ASTNodeType type;
     char *name;
     int value;
@@ -15,8 +16,7 @@ typedef struct ASTNode {
     struct ASTNode **children;
 } ASTNode;
 
-ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count );
+ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count);
 void print_ast(ASTNode *node, int level);
-
 
 #endif // SYNTAX_H

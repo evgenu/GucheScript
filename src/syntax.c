@@ -1,19 +1,20 @@
 #include "syntax.h"
 
-ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count ) {
+ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count)
+{
     ASTNode *node = (ASTNode *)malloc(sizeof(ASTNode));
     node->type = type;
     node->name = name ? strdup(name) : NULL;
     node->value = value;
     node->children = (ASTNode **)malloc(count * sizeof(ASTNode *));
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++)
+    {
         node->children[i] = children[i];
     }
     node->size = count;
     node->current = 0;
     return node;
 }
-
 
 void print_ast(ASTNode *node, int level)
 {

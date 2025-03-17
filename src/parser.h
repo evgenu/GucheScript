@@ -10,7 +10,8 @@
 #include "lexer.h"
 #include "syntax.h"
 
-typedef struct parser_t {
+typedef struct parser_t
+{
     token_t *tokens;
     size_t index;
 } parser_t;
