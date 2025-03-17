@@ -10,11 +10,12 @@ typedef struct ASTNode {
     ASTNodeType type;
     char *name;
     int value;
-    struct ASTNode *left;
-    struct ASTNode *right;
+    int current;
+    int size;
+    struct ASTNode **children;
 } ASTNode;
 
-ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode *left, ASTNode *right);
+ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count );
 void print_ast(ASTNode *node, int level);
 
 
