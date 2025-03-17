@@ -17,18 +17,39 @@ typedef enum
     ERR_INVALID_FUNC,
 } errors;
 
-typedef enum
-{
+typedef enum {
     TOKEN_NAME = 1,
     TOKEN_NUMBER,
-    TOKEN_STRING,
-    TOKEN_CHAR,
+    TOKEN_FUNC,
+    TOKEN_IF,
     TOKEN_OPAREN,
     TOKEN_CPAREN,
     TOKEN_OCURLY,
     TOKEN_CCURLY,
-    TOKEN_SEMICOLON,
-    TOKEN_RETURN,
+    TOKEN_ASSIGN,
+    TOKEN_INT,
+    TOKEN_CHAR,
+    TOKEN_CHAR_LITERAL,
+    TOKEN_PLUS,
+    TOKEN_MINUS,
+    TOKEN_MUL,
+    TOKEN_DIV,
+    TOKEN_GREATER,
+    TOKEN_LESS,
+    TOKEN_EQUAL,
+    TOKEN_COMMA,
+    TOKEN_EOF
 } token_types;
+
+typedef enum {
+    AST_FUNCTION,
+    AST_VAR_DECL,
+    AST_ASSIGNMENT,
+    AST_EXPRESSION,
+    AST_IF_STATEMENT,
+    AST_FUNC_CALL,
+    AST_LITERAL,
+    AST_IDENTIFIER
+} ASTNodeType;
 
 #endif // GLOBALS_H

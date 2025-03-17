@@ -11,7 +11,7 @@
 typedef struct Token
 {
     char *value;
-    char *type;
+    token_types type;
     uint64_t pos;
 } token_t;
 

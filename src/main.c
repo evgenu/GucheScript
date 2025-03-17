@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include "lexer.h"
 #include "parser.h"
-#include "variable_table.h"
+#include "syntax.h"
 
 int main(int argc, char *argv[])
 {
+
+    setvbuf(stdout, NULL, _IOLBF, 0);
+
     if (argc < 2)
     {
         fprintf(stderr, "Error: no input files\n");
@@ -50,10 +53,41 @@ int main(int argc, char *argv[])
 
     for (size_t i = 0; i < token_count; i++)
     {
-        printf("Token: { Value: %s, Type: %s }\n", tokens[i].value, tokens[i].type);
+        printf("Token: { Value: %s, Type: %s }\n", tokens[i].value, tokens[i].type == TOKEN_INT ? "INT" : 
+                                                    tokens[i].type == TOKEN_CHAR ? "CHAR" : 
+                                                    tokens[i].type == TOKEN_NAME ? "NAME" :
+                                                    tokens[i].type == TOKEN_NUMBER ? "NUMBER" : 
+                                                    tokens[i].type == TOKEN_OPAREN ? "OPAREN" :
+                                                    tokens[i].type == TOKEN_CPAREN ? "CPAREN" :
+                                                    tokens[i].type == TOKEN_OCURLY ? "OCURLY" :
+                                                    tokens[i].type == TOKEN_CCURLY ? "CCURLY" :
+                                                    tokens[i].type == TOKEN_ASSIGN ? "ASSIGN" :
+                                                    tokens[i].type == TOKEN_PLUS ? "PLUS" :
+                                                    tokens[i].type == TOKEN_MINUS ? "MINUS" :
+                                                    tokens[i].type == TOKEN_MUL ? "MUL" :
+                                                    tokens[i].type == TOKEN_DIV ? "DIV" :
+                                                    tokens[i].type == TOKEN_GREATER ? "GREATER" :
+                                                    tokens[i].type == TOKEN_LESS ? "LESS" :
+                                                    tokens[i].type == TOKEN_EQUAL ? "EQUAL" :
+                                                    tokens[i].type == TOKEN_COMMA ? "COMMA" :
+                                                    tokens[i].type == TOKEN_EOF ? "EOF" :
+                                                    tokens[i].type == TOKEN_IF ? "IF" :
+                                                    tokens[i].type == TOKEN_FUNC ? "FUNC" :
+                                                    "UNKNOWN");
     }
 
-    parser_t parser = init_parser(tokens, token_count);
+    parser_t parser = {tokens, 0};
+    ASTNode *ast = parse_function(&parser);
+
+    if (ast == NULL)
+    {
+        fprintf(stderr, "Error: parsing failed\n");
+        exit(1);
+    }
+    printf("Parsing successful\n");
+
+    print_ast(ast, 0);
+    
 
     free(tokens);
 }

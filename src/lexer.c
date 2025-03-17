@@ -85,7 +85,7 @@ token_t next_token(lexer_t *lexer)
     {
         token_t token = {
             .value = NULL,
-            .type = "EOF",
+            .type = TOKEN_EOF,
             .pos = lexer->cur,
         };
         return token;
@@ -108,7 +108,16 @@ token_t next_token(lexer_t *lexer)
             value[length] = '\0';
 
             token.value = value;
-            token.type = "IDENTIFIER";
+            if (strcmp(value, "int") == 0)
+                token.type = TOKEN_INT;
+            else if (strcmp(value, "char") == 0)
+                token.type = TOKEN_CHAR;
+            else if (strcmp(value, "func") == 0)
+                token.type = TOKEN_FUNC;
+            else if (strcmp(value, "if") == 0)
+                token.type = TOKEN_IF;
+            else
+                token.type = TOKEN_NAME;
             token.pos = start;
         }
         else if (isdigit(c))
@@ -124,7 +133,7 @@ token_t next_token(lexer_t *lexer)
             value[length] = '\0';
 
             token.value = value;
-            token.type = "NUMBER";
+            token.type = TOKEN_NUMBER;
             token.pos = start;
         }
         else
@@ -133,7 +142,32 @@ token_t next_token(lexer_t *lexer)
             token.value = (char *)malloc(2);
             token.value[0] = c;
             token.value[1] = '\0';
-            token.type = "SYMBOL";
+            if (c == '(')
+                token.type = TOKEN_OPAREN;
+            else if (c == ')')
+                token.type = TOKEN_CPAREN;
+            else if (c == '{')
+                token.type = TOKEN_OCURLY;
+            else if (c == '}')
+                token.type = TOKEN_CCURLY;
+            else if (c == '+')
+                token.type = TOKEN_PLUS;
+            else if (c == '-')
+                token.type = TOKEN_MINUS;
+            else if (c == '*')
+                token.type = TOKEN_MUL;
+            else if (c == '/')
+                token.type = TOKEN_DIV;
+            else if (c == '=')
+                token.type = TOKEN_ASSIGN;
+            else if (c == '>')
+                token.type = TOKEN_GREATER;
+            else if (c == '<')
+                token.type = TOKEN_LESS;
+            else if (c == ',')
+                token.type = TOKEN_COMMA;
+            else
+                token.type = TOKEN_EOF;
             token.pos = lexer->cur - 1;
         }
 
