@@ -28,7 +28,7 @@ void consume(parser_t *parser, token_types type)
     }
 }
 
-ASTNode *parse_function(parser_t *parser)
+ast_node_t *parse_function(parser_t *parser)
 {
     consume(parser, TOKEN_FUNC);
 
@@ -44,13 +44,13 @@ ASTNode *parse_function(parser_t *parser)
     consume(parser, TOKEN_OCURLY);
 
     int count = 0;
-    ASTNode **body = (ASTNode **)malloc(1 * sizeof(ASTNode *));
+    ast_node_t **body = (ast_node_t **)malloc(1 * sizeof(ast_node_t *));
 
     while (current_token(parser)->type != TOKEN_CCURLY && current_token(parser)->type != TOKEN_EOF)
     {
         count++;
-        body = (ASTNode **)realloc(body, count * sizeof(ASTNode *));
-        ASTNode *stmt = parse_statement(parser);
+        body = (ast_node_t **)realloc(body, count * sizeof(ast_node_t *));
+        ast_node_t *stmt = parse_statement(parser);
         body[count - 1] = stmt;
     }
 
@@ -59,7 +59,7 @@ ASTNode *parse_function(parser_t *parser)
     return create_node(AST_FUNCTION, func_name, 0, body, count);
 }
 
-ASTNode *parse_statement(parser_t *parser)
+ast_node_t *parse_statement(parser_t *parser)
 {
     if (current_token(parser)->type == TOKEN_INT || current_token(parser)->type == TOKEN_CHAR)
     {
@@ -87,7 +87,7 @@ ASTNode *parse_statement(parser_t *parser)
     }
 }
 
-ASTNode *parse_variable_declaration(parser_t *parser)
+ast_node_t *parse_variable_declaration(parser_t *parser)
 {
     token_types var_type = current_token(parser)->type;
     advance(parser);
@@ -100,26 +100,26 @@ ASTNode *parse_variable_declaration(parser_t *parser)
 
     consume(parser, TOKEN_ASSIGN);
 
-    ASTNode *expr = parse_expression(parser);
-    ASTNode *assignement = create_node(AST_ASSIGNMENT, "=", 0, &expr, 1);
+    ast_node_t *expr = parse_expression(parser);
+    ast_node_t *assignement = create_node(AST_ASSIGNMENT, "=", 0, &expr, 1);
     return create_node(AST_VAR_DECL, var_name, 0, &assignement, 1);
 }
 
-ASTNode *parse_assignment(parser_t *parser)
+ast_node_t *parse_assignment(parser_t *parser)
 {
     char *var_name = strdup(current_token(parser)->value);
     advance(parser);
 
     consume(parser, TOKEN_ASSIGN);
 
-    ASTNode *expr = parse_expression(parser);
-    ASTNode *assignement = create_node(AST_ASSIGNMENT, "=", 0, &expr, 1);
+    ast_node_t *expr = parse_expression(parser);
+    ast_node_t *assignement = create_node(AST_ASSIGNMENT, "=", 0, &expr, 1);
     return create_node(AST_ASSIGNMENT, var_name, 0, &assignement, 1);
 }
 
-ASTNode *parse_expression(parser_t *parser)
+ast_node_t *parse_expression(parser_t *parser)
 {
-    ASTNode *left = NULL;
+    ast_node_t *left = NULL;
 
     if (current_token(parser)->type == TOKEN_NUMBER)
     {
@@ -145,8 +145,8 @@ ASTNode *parse_expression(parser_t *parser)
         token_t *op_token = current_token(parser);
         advance(parser);
 
-        ASTNode *right = parse_expression(parser);
-        ASTNode **children = (ASTNode **)malloc(2 * sizeof(ASTNode *));
+        ast_node_t *right = parse_expression(parser);
+        ast_node_t **children = (ast_node_t **)malloc(2 * sizeof(ast_node_t *));
         children[0] = left;
         children[1] = right;
         left = create_node(AST_EXPRESSION, op_token->value, 0, children, 2);
@@ -158,9 +158,9 @@ ASTNode *parse_expression(parser_t *parser)
         token_t *op_token = current_token(parser);
         advance(parser);
 
-        ASTNode *right = parse_expression(parser);
+        ast_node_t *right = parse_expression(parser);
 
-        ASTNode **children = (ASTNode **)malloc(2 * sizeof(ASTNode *));
+        ast_node_t **children = (ast_node_t **)malloc(2 * sizeof(ast_node_t *));
         children[0] = left;
         children[1] = right;
         left = create_node(AST_EXPRESSION, op_token->value, 0, children, 2);
@@ -169,28 +169,28 @@ ASTNode *parse_expression(parser_t *parser)
     return left;
 }
 
-ASTNode *parse_if_statement(parser_t *parser)
+ast_node_t *parse_if_statement(parser_t *parser)
 {
     consume(parser, TOKEN_IF);
 
     consume(parser, TOKEN_OPAREN);
-    ASTNode *condition = parse_expression(parser);
+    ast_node_t *condition = parse_expression(parser);
     consume(parser, TOKEN_CPAREN);
 
     consume(parser, TOKEN_OCURLY);
 
     int count = 0;
-    ASTNode **body = (ASTNode **)malloc(1 * sizeof(ASTNode *));
+    ast_node_t **body = (ast_node_t **)malloc(1 * sizeof(ast_node_t *));
 
     count++;
-    body = (ASTNode **)realloc(body, count * sizeof(ASTNode *));
+    body = (ast_node_t **)realloc(body, count * sizeof(ast_node_t *));
     body[count - 1] = condition;
 
     while (current_token(parser)->type != TOKEN_CCURLY && current_token(parser)->type != TOKEN_EOF)
     {
         count++;
-        body = (ASTNode **)realloc(body, count * sizeof(ASTNode *));
-        ASTNode *stmt = parse_statement(parser);
+        body = (ast_node_t **)realloc(body, count * sizeof(ast_node_t *));
+        ast_node_t *stmt = parse_statement(parser);
         body[count - 1] = stmt;
     }
 
@@ -199,7 +199,7 @@ ASTNode *parse_if_statement(parser_t *parser)
     return create_node(AST_IF_STATEMENT, NULL, 0, body, count);
 }
 
-ASTNode *parse_function_call(parser_t *parser)
+ast_node_t *parse_function_call(parser_t *parser)
 {
     if (current_token(parser)->type != TOKEN_NAME)
     {
@@ -212,8 +212,8 @@ ASTNode *parse_function_call(parser_t *parser)
 
     consume(parser, TOKEN_OPAREN);
 
-    ASTNode *args = NULL;
-    ASTNode *last_arg = NULL;
+    ast_node_t *args = NULL;
+    ast_node_t *last_arg = NULL;
 
     if (current_token(parser)->type != TOKEN_CPAREN)
     {

@@ -8,15 +8,15 @@
 
 typedef struct ASTNode
 {
-    ASTNodeType type;
+    ast_node_type type;
     char *name;
     int value;
     int current;
     int size;
-    struct ASTNode **children;
-} ASTNode;
+    struct ast_node_t **children;
+} ast_node_t;
 
-ASTNode *create_node(ASTNodeType type, char *name, int value, ASTNode **children, int count);
-void print_ast(ASTNode *node, int level);
+ast_node_t *create_node(ast_node_type type, char *name, int value, ast_node_t **children, int count);
+void print_ast(ast_node_t *node, int level);
 
 #endif // SYNTAX_H

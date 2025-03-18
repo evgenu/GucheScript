@@ -52,6 +52,6 @@ typedef enum
     AST_FUNC_CALL,
     AST_LITERAL,
     AST_IDENTIFIER
-} ASTNodeType;
+} ast_node_type;
 
 #endif // GLOBALS_H

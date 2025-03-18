@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     printf("\n");
 
     parser_t parser = {tokens, 0};
-    ASTNode *ast = parse_function(&parser);
+    ast_node_t *ast = parse_function(&parser);
 
     if (ast == NULL)
     {
