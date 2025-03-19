@@ -46,6 +46,10 @@ void print_ast(ast_node_t *node, int level)
         printf("If Statement\n");
         break;
 
+    case AST_WHILE_STATEMENT:
+        printf("While Statement\n");
+        break;
+
     case AST_FUNC_CALL:
         printf("Function Call: %s\n", node->name);
         break;

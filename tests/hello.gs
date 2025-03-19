@@ -1,11 +1,12 @@
 func main {
-    int a = 5
-    int b = a + 10 + 5
-    if (a < 5) {
-       a = 10
-       b = 5
+    int a = 5 + 10
+    int b = a + 5 * (5 - 10) * 5
+
+    if (a < 5 * (10 - 1)) {
+        a = 5
     }
-    if (a > 10 + 5) {
-        a = 4
+
+    while(a < 5) {
+        a = a * 1 + 1
     }
 }

@@ -116,6 +116,8 @@ token_t next_token(lexer_t *lexer)
                 token.type = TOKEN_FUNC;
             else if (strcmp(value, "if") == 0)
                 token.type = TOKEN_IF;
+            else if (strcmp(value, "while") == 0)
+                token.type = TOKEN_WHILE;
             else
                 token.type = TOKEN_NAME;
             token.pos = start;
