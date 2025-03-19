@@ -36,6 +36,7 @@ typedef enum
     TOKEN_MINUS,
     TOKEN_MUL,
     TOKEN_DIV,
+    TOKEN_POW,
     TOKEN_GREATER,
     TOKEN_LESS,
     TOKEN_EQUAL,

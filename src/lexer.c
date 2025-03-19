@@ -168,6 +168,8 @@ token_t next_token(lexer_t *lexer)
                 token.type = TOKEN_LESS;
             else if (c == ',')
                 token.type = TOKEN_COMMA;
+            else if (c == '^')
+                token.type = TOKEN_POW;
             else
                 token.type = TOKEN_EOF;
             token.pos = lexer->cur - 1;

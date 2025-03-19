@@ -23,7 +23,10 @@ void consume(parser_t *parser, token_types type)
     }
     else
     {
-        printf("Error: Unexpected token %d with value %s at position %zu\n", current_token(parser)->type, current_token(parser)->value, parser->index);
+        printf("Error: Unexpected token %d with value %s at position %zu\n",
+               current_token(parser)->type,
+               current_token(parser)->value,
+               parser->index);
         exit(1);
     }
 }
@@ -43,6 +46,8 @@ int precedence(token_types type)
     case TOKEN_MUL:
     case TOKEN_DIV:
         return 4;
+    case TOKEN_POW:
+        return 5;
     default:
         return 0;
     }
@@ -60,7 +65,7 @@ ast_node_t *parse_function(parser_t *parser)
 
     char *func_name = strdup(current_token(parser)->value);
     advance(parser);
-
+    
     consume(parser, TOKEN_OCURLY);
 
     int count = 0;
@@ -122,6 +127,9 @@ ast_node_t *parse_variable_declaration(parser_t *parser)
     char *var_name = strdup(current_token(parser)->value);
     advance(parser);
 
+    if (current_token(parser)->type != TOKEN_ASSIGN)
+        return create_node(AST_VAR_DECL, var_name, 0, NULL, 0);
+
     consume(parser, TOKEN_ASSIGN);
 
     ast_node_t *expr = parse_expression(parser);
@@ -160,7 +168,8 @@ ast_node_t *parse_expression(parser_t *parser)
            current_token(parser)->type == TOKEN_DIV ||
            current_token(parser)->type == TOKEN_GREATER ||
            current_token(parser)->type == TOKEN_LESS ||
-           current_token(parser)->type == TOKEN_EQUAL)
+           current_token(parser)->type == TOKEN_EQUAL ||
+           current_token(parser)->type == TOKEN_POW)
     {
         if (current_token(parser)->type == TOKEN_NUMBER)
         {
@@ -212,11 +221,31 @@ ast_node_t *parse_expression(parser_t *parser)
                  current_token(parser)->type == TOKEN_MUL ||
                  current_token(parser)->type == TOKEN_DIV ||
                  current_token(parser)->type == TOKEN_GREATER ||
-                 current_token(parser)->type == TOKEN_LESS ||
-                 current_token(parser)->type == TOKEN_EQUAL)
+                 current_token(parser)->type == TOKEN_LESS)
         {
             while (operators_count > 0 &&
                    precedence(operators[operators_count - 1]->type) >= precedence(current_token(parser)->type))
+            {
+                token_t *op = operators[--operators_count];
+                ast_node_t *right = output[--output_count];
+                ast_node_t *left = output[--output_count];
+                ast_node_t **children = (ast_node_t **)malloc(2 * sizeof(ast_node_t *));
+                children[0] = left;
+                children[1] = right;
+                ast_node_t *expr = create_node(AST_EXPRESSION, op->value, 0, children, 2);
+                output_count++;
+                output = (ast_node_t **)realloc(output, output_count * sizeof(ast_node_t *));
+                output[output_count - 1] = expr;
+            }
+            operators_count++;
+            operators = (token_t **)realloc(operators, operators_count * sizeof(token_t *));
+            operators[operators_count - 1] = current_token(parser);
+            advance(parser);
+        }
+        else if (current_token(parser)->type == TOKEN_POW)
+        {
+            while (operators_count > 0 &&
+                   precedence(operators[operators_count - 1]->type) > precedence(current_token(parser)->type))
             {
                 token_t *op = operators[--operators_count];
                 ast_node_t *right = output[--output_count];

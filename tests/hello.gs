@@ -1,12 +1,15 @@
+# this is a comment!
+
 func main {
-    int a = 5 + 10
+
+    # here we show how to use power
+    int a = 5^2^3 + 10
+
+    # arithmetic logic
     int b = a + 5 * (5 - 10) * 5
 
-    if (a < 5 * (10 - 1)) {
-        a = 5
-    }
+    # simple
+    char d = 5
 
-    while(a < 5) {
-        a = a * 1 + 1
-    }
+    int c
 }

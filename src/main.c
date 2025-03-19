@@ -73,6 +73,8 @@ int main(int argc, char *argv[])
                                                     tokens[i].type == TOKEN_EOF ? "EOF" :
                                                     tokens[i].type == TOKEN_IF ? "IF" :
                                                     tokens[i].type == TOKEN_FUNC ? "FUNC" :
+                                                    tokens[i].type == TOKEN_WHILE ? "WHILE" :
+                                                    tokens[i].type == TOKEN_POW ? "POW" :
                                                     "UNKNOWN");
     }
 
